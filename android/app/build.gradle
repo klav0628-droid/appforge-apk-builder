@@ -1,0 +1,15 @@
+plugins { id 'com.android.application' }
+
+android {
+    namespace 'com.appforge.generated'
+    compileSdk 35
+    buildFeatures { buildConfig true }
+    defaultConfig {
+        applicationId (findProperty('APP_PACKAGE') ?: 'com.appforge.generated')
+        minSdk 23
+        targetSdk 35
+        versionCode 1
+        versionName '1.0'
+        buildConfigField 'String', 'WEBSITE_URL', '"' + (findProperty('WEBSITE_URL') ?: 'https://example.com') + '"'
+    }
+}
