@@ -1,39 +1,46 @@
-name: Build installable APK
+name: Build Gig India APK
+
 on:
+  push:
+    branches: [ main ]
   workflow_dispatch:
-    inputs:
-      app_name: { description: App name, required: true, default: My App }
-      website_url: { description: Website URL including https://, required: true, default: https://example.com }
-      package_name: { description: Android package name, required: true, default: com.appforge.generated }
+
+permissions:
+  contents: read
+
 jobs:
   build:
     runs-on: ubuntu-latest
-    permissions: { contents: read }
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
-        with: { distribution: temurin, java-version: '17' }
-      - uses: android-actions/setup-android@v3
-      - run: sdkmanager "platforms;android-35" "build-tools;35.0.0"
-      - uses: gradle/actions/setup-gradle@v4
-        with: { gradle-version: '8.11.1' }
-      - name: Apply app details
-        working-directory: android
-        env: { APP_NAME: '${{ inputs.app_name }}', WEBSITE_URL: '${{ inputs.website_url }}' }
-        run: |
-          python3 - <<'PY'
-          import os
-          from pathlib import Path
-          from xml.sax.saxutils import escape
-          Path('app/src/main/res/values/strings.xml').write_text('<resources><string name="app_name">'+escape(os.environ['APP_NAME'])+'</string></resources>')
-          PY
-          printf '\nWEBSITE_URL="%s"\n' "$WEBSITE_URL" >> gradle.properties
-      - name: Build installable APK
-        working-directory: android
-        env: { APP_PACKAGE: '${{ inputs.package_name }}' }
-        run: gradle :app:assembleDebug -PAPP_PACKAGE="$APP_PACKAGE"
-      - uses: actions/upload-artifact@v4
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
         with:
-          name: ${{ inputs.app_name }}-installable-apk
-          path: android/app/build/outputs/apk/debug/app-debug.apk
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Android SDK packages
+        run: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.11.1'
+
+      - name: Build installable APK
+        run: gradle assembleDebug --stacktrace
+
+      - name: Rename APK
+        run: cp app/build/outputs/apk/debug/app-debug.apk app/build/outputs/apk/debug/Gig-India.apk
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Gig-India-APK
+          path: app/build/outputs/apk/debug/Gig-India.apk
           if-no-files-found: error
