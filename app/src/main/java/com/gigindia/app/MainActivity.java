@@ -1,4 +1,4 @@
-package com.gigindia.app;
+package com.greatindia.hostelbooker;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -31,7 +31,7 @@ public class MainActivity extends Activity {
         settings.setSupportZoom(false);
         settings.setBuiltInZoomControls(false);
         settings.setDisplayZoomControls(false);
-        settings.setUserAgentString(settings.getUserAgentString() + " HostelBookerAndroid/1.0");
+        settings.setUserAgentString(settings.getUserAgentString() + " HostelBookerAndroid/1.1");
 
         webView.setWebViewClient(new WebViewClient() {
             @Override
