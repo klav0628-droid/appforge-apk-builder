@@ -12,7 +12,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 public class MainActivity extends Activity {
-    private static final String HOME_URL = "https://klav0628-droid.github.io/Great-India-Gig-Worker/Gig-India-TASK-HISTORY-FORM-FIXED-GREAT-INDIA-TECHNOLOGY.html?v=final-e57503";
+    private static final String HOME_URL = "https://klav0628-droid.github.io/Hostel-Booking/hostel-booking-FINAL-FIXED%20(1).html";
     private WebView webView;
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -31,9 +31,7 @@ public class MainActivity extends Activity {
         settings.setSupportZoom(false);
         settings.setBuiltInZoomControls(false);
         settings.setDisplayZoomControls(false);
-        settings.setLoadWithOverviewMode(false);
-        settings.setUseWideViewPort(false);
-        settings.setUserAgentString(settings.getUserAgentString() + " GigIndiaAndroid/1.0");
+        settings.setUserAgentString(settings.getUserAgentString() + " HostelBookerAndroid/1.0");
 
         webView.setWebViewClient(new WebViewClient() {
             @Override
@@ -43,24 +41,19 @@ public class MainActivity extends Activity {
                     view.loadUrl(url);
                     return true;
                 }
-                try {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
-                } catch (Exception ignored) { }
+                try { startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url))); }
+                catch (Exception ignored) { }
                 return true;
             }
         });
         webView.setWebChromeClient(new WebChromeClient());
         webView.setDownloadListener((DownloadListener) (url, userAgent, contentDisposition, mimetype, contentLength) -> {
-            try {
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
-            } catch (Exception ignored) { }
+            try { startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url))); }
+            catch (Exception ignored) { }
         });
 
-        if (savedInstanceState == null) {
-            webView.loadUrl(HOME_URL);
-        } else {
-            webView.restoreState(savedInstanceState);
-        }
+        if (savedInstanceState == null) webView.loadUrl(HOME_URL);
+        else webView.restoreState(savedInstanceState);
     }
 
     @Override
@@ -71,10 +64,7 @@ public class MainActivity extends Activity {
 
     @Override
     public void onBackPressed() {
-        if (webView != null && webView.canGoBack()) {
-            webView.goBack();
-        } else {
-            super.onBackPressed();
-        }
+        if (webView != null && webView.canGoBack()) webView.goBack();
+        else super.onBackPressed();
     }
 }
