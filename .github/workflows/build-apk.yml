@@ -1,8 +1,8 @@
-name: Build Gig India APK
+name: Build Hostel Booker APK
 
 on:
   push:
-    branches: [ main ]
+    branches: [ hostel-booker ]
   workflow_dispatch:
 
 permissions:
@@ -36,11 +36,11 @@ jobs:
         run: gradle assembleDebug --stacktrace
 
       - name: Rename APK
-        run: cp app/build/outputs/apk/debug/app-debug.apk app/build/outputs/apk/debug/Gig-India.apk
+        run: cp app/build/outputs/apk/debug/app-debug.apk app/build/outputs/apk/debug/Hostel-Booker.apk
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Gig-India-APK
-          path: app/build/outputs/apk/debug/Gig-India.apk
+          name: Hostel-Booker-APK
+          path: app/build/outputs/apk/debug/Hostel-Booker.apk
           if-no-files-found: error
